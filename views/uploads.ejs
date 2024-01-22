@@ -80,7 +80,7 @@
                         // count files
                         let numFiles = 0;
                         let numDirs = 0;
-                        data.files.forEach(file => {
+                        data.files.forEach((file, i) => {
                             if (file.isDir) {
                                 numDirs++;
                             } else {
@@ -97,7 +97,8 @@
                                 }
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
-                            filesTable.innerHTML += `<tr><td>${fileLink}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
+                            const classAttr = (i % 2 == 0) ? ' class="ftRowEven"' : '';
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {

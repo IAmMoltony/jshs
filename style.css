@@ -11,6 +11,10 @@
     text-align: left;
 }
 
+.ftRowEven {
+    background-color: #b0ffc4;
+}
+
 #uploadOk {
     color: green;
     font-weight: bold;
