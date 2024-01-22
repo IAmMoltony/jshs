@@ -1,4 +1,7 @@
 const getFileType = mime => {
+    if (mime == "@unknown@")
+        return "Other/Unknown";
+
     const mimeSplit = mime.split('/');
     const type = mimeSplit[0];
     const subType = mimeSplit[1];

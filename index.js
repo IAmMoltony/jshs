@@ -16,16 +16,18 @@ const onSendFile = err => {
         console.error('Error sending file', err);
 };
 
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
     res.redirect('/dashboard');
 });
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile('./public/dashboard.html', sendFileOptions, onSendFile);
+    res.render('dashboard', {});
 });
 
 app.get('/uploads', (req, res) => {
-    res.sendFile('./public/uploads.html', sendFileOptions, onSendFile);
+    res.render('uploads', {});
 });
 
 app.get('/list-uploads', (req, res) => {
@@ -58,7 +60,7 @@ app.get('/list-uploads', (req, res) => {
         const realName = `${uploadsBase}/${file}`;
         const stat = fs.statSync(realName);
         const isDir = stat.isDirectory();
-        const mimeType = mime.lookup(file);
+        const mimeType = mime.lookup(file) || '@unknown@';
         const fileObject = {
             name: file,
             isDir: isDir,
@@ -103,16 +105,16 @@ app.get('/viewFile', (req, res) => {
     const mimeType = mime.lookup(req.query.name);
     const splitType = mimeType.split('/');
     if (splitType[0] == 'audio') {
-        res.sendFile('./public/file-audio.html', sendFileOptions, onSendFile);
+        res.render('file-audio', {});
     } else if (splitType[0] == 'video') {
-        res.sendFile('./public/file-video.html', sendFileOptions, onSendFile);
+        res.render('file-video', {});
     } else {
-        res.sendFile('./public/file-plain.html', sendFileOptions, onSendFile);
+        res.render('file-plain', {});
     }
 });
 
 app.get('/uploadPage', (req, res) => {
-    res.sendFile('./public/upload.html', sendFileOptions, onSendFile);
+    res.render('upload', {});
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {

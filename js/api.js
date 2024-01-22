@@ -25,5 +25,12 @@ const jshsApi = {
             .then(resp => resp.text())
             .then(data => cb(data))
             .catch(err => console.error('Failed to get raw file:', err));
+    },
+
+    getNavbar: cb => {
+        fetch('/navbar')
+            .then(resp => resp.text())
+            .then(data => cb(data))
+            .catch(err => console.error('Failed to get navbar:', err));
     }
 };
