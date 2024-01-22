@@ -29,12 +29,12 @@
     font-family: sans-serif;
 }
 
-.nav-link {
+.act-link {
     color: green;
     text-decoration: none;
 }
 
-.nav-link:hover {
+.act-link:hover {
     color: lime;
     text-decoration: underline;
 }
