@@ -100,7 +100,7 @@
                             }
                             const classAttr = (i % 2 == 0) ? ' class="ftRowEven"' : '';
                             const fileSize = strFileSize(file.size);
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td></tr>`
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {
