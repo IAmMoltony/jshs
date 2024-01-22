@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const mime = require('mime-types');
+const upload = require('./upload');
 
 const app = express();
 const port = 8000;
@@ -108,6 +109,14 @@ app.get('/viewFile', (req, res) => {
     } else {
         res.sendFile('./public/file-plain.html', sendFileOptions, onSendFile);
     }
+});
+
+app.get('/uploadPage', (req, res) => {
+    res.sendFile('./public/upload.html', sendFileOptions, onSendFile);
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.redirect('/uploadPage?uploadOk=yes');
 });
 
 app.listen(port, () => {
