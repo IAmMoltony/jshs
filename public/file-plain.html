@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jshs | View file</title>
+    </head>
+    <body>
+        <h1>View file</h1>
+        <hr>
+        <p id="fileName"></p>
+        <pre id="fileContents"></pre>
+
+        <script src="js/params.js"></script>
+        <script src="js/api.js"></script>
+        <script>
+            const pFileName = document.querySelector('#fileName');
+            const fileContents = document.querySelector('#fileContents');
+            let fileNameText = getQueryParam('name');
+            if (getQueryParam('folder') != undefined) {
+                fileNameText = `${getQueryParam('folder')}/${fileNameText}`;
+            }
+            pFileName.innerText = fileNameText;
+
+            jshsApi.rawFile(getQueryParam('folder'), getQueryParam('name'), data => {
+                fileContents.innerText = data;
+            });
+        </script>
+    </body>
+</html>

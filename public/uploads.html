@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jshs | Uploads</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <h1>Uploads</h1>
+        <hr>
+
+        <p id="status"></p>
+        <button id="btnBackFolder">Back</button>
+        <p></p>
+        <div id="filesTableContainer"></div>
+
+        <script src="js/api.js"></script>
+        <script src="js/filetype.js"></script>
+        <script>
+            const pStatus = document.querySelector('#status');
+            const ftContainer = document.querySelector('#filesTableContainer');
+            const btnBackFolder = document.querySelector('#btnBackFolder');
+            btnBackFolder.style.display = "none";
+
+            let folder = undefined;
+            let filesTable = undefined;
+
+            const prevFolder = () => {
+                if (folder == undefined)
+                    return;
+
+                const folderSplit = folder.split('/');
+                if (folderSplit.length == 1)
+                    folder = undefined;
+                else
+                    folder = folderSplit[folderSplit.length - 2];
+                getUploads();
+            }
+
+            btnBackFolder.onclick = prevFolder;
+
+            const setFolder = f => {
+                if (folder == undefined)
+                    folder = f;
+                else
+                    folder += `/${f}`;
+                getUploads();
+            }
+
+            const deleteFilesTable = () => {
+                if (filesTable != undefined)
+                    filesTable.remove();
+            }
+
+            const makeFilesTable = () => {
+                deleteFilesTable();
+                filesTable = document.createElement('table');
+                filesTable.innerHTML = '<tr><th>Name</th><th>Type</th></tr>';
+                filesTable.classList.add('filesTable');
+                ftContainer.appendChild(filesTable);
+            }
+
+            const getUploads = () => {
+                makeFilesTable();
+                pStatus.innerText = '[loading]';
+
+                if (folder != undefined) {
+                    btnBackFolder.style.display = "block";
+                } else {
+                    btnBackFolder.style.display = "none";
+                }
+
+                jshsApi.getUploads(folder, data => {
+                    if (data.errCode != 0) {
+                        switch (data.errCode) {
+                            case 1:
+                                pStatus.innerText = 'Error: directory traversal attack';
+                                break;
+                        }
+                    } else {
+                        // count files
+                        let numFiles = 0;
+                        let numDirs = 0;
+                        data.files.forEach(file => {
+                            if (file.isDir) {
+                                numDirs++;
+                            } else {
+                                numFiles++;
+                            }
+
+                            let fileLink;
+                            if (file.isDir) {
+                                fileLink = `<a href="javascript:setFolder('${file.name}')">${file.name}</a>`;
+                            } else {
+                                let viewFileUrl = `/viewFile?name=${file.name}`;
+                                if (folder != undefined) {
+                                    viewFileUrl += `&folder=${folder}`;
+                                }
+                                fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
+                            }
+                            filesTable.innerHTML += `<tr><td>${fileLink}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
+                        });
+                        pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
+                        if (folder != undefined) {
+                            pStatus.innerText += ` in folder '${folder}'`;
+                        }
+                    }
+                });
+            }
+
+            getUploads();
+        </script>
+    </body>
+</html>

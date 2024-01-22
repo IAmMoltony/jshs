@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jshs | View file</title>
+    </head>
+    <body>
+        <h1>View video file</h1>
+        <hr>
+        <p id="fileName"></p>
+        <div id="videoContainer"></div>
+
+        <script src="js/params.js"></script>
+        <script>
+            const pFileName = document.querySelector('#fileName');
+            const videoContainer = document.querySelector('#videoContainer');
+            let fileNameText = getQueryParam('name');
+            if (getQueryParam('folder') != undefined) {
+                fileNameText = `${getQueryParam('folder')}/${fileNameText}`;
+            }
+            pFileName.innerText = fileNameText;
+            
+            let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
+            if (getQueryParam('folder') != undefined) {
+                rawFileUrl += `&folder=${getQueryParam('folder')}`;
+            }
+            const videoElement = document.createElement('video');
+            videoElement.src = rawFileUrl;
+            videoElement.controls = true;
+            videoContainer.appendChild(videoElement);
+        </script>
+    </body>
+</html>
