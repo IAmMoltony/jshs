@@ -5,6 +5,9 @@ const mime = require('mime-types');
 const upload = require('./upload');
 const bodyParser = require('body-parser');
 const mv = require('mv');
+const config = require('./config');
+
+console.log('Uploads folder:', config.uploadsFolder);
 
 const app = express();
 const port = 8000;
@@ -53,7 +56,7 @@ app.get('/list-uploads', (req, res) => {
         }
     }
 
-    let uploadsBase = './uploads';
+    let uploadsBase = config.uploadsFolder;
     if (folder != undefined) {
         uploadsBase += `/${folder}`;
     }
@@ -93,7 +96,7 @@ app.get('/rawFile', (req, res) => {
     } else {
         name = req.query.name;
     }
-    name = `./uploads/${name}`;
+    name = `${config.uploadsFolder}/${name}`;
     if (name.includes('..')) {
         res.status(400).send('directory traversal attack');
         return;
@@ -127,13 +130,13 @@ app.get('/uploadPage', (req, res) => {
 app.post('/upload', upload.single('file'), (req, res) => {
     const folder = req.body.folder;
     if (folder) {
-        const realFolder = `${__dirname}/uploads/${folder}`;
+        const realFolder = `${config.uploadsFolder}/${folder}`;
         if (folder.includes('..')) {
             res.status(400).send('directory traversal attack???');
             return;
         }
 
-        mv(`${__dirname}/uploads/${req.file.filename}`, `${realFolder}/${req.file.filename}`, {mkdirp: true}, err => {
+        mv(`${config.uploadsFolder}/${req.file.filename}`, `${realFolder}/${req.file.filename}`, {mkdirp: true}, err => {
             if (err)
                 console.error('Error moving file into folder:', err);
         });
