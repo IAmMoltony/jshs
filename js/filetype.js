@@ -1,6 +1,29 @@
-const getFileType = mime => {
-    if (mime == "@unknown@")
-        return "Other/Unknown";
+const getFileType = (mime, fileName) => {
+    const guessByExtension = name => {
+        const extSplit = name.split('.');
+        if (extSplit.length == 1)
+            return "idk";
+        console.log(extSplit);
+
+        ext = extSplit[extSplit.length - 1].toLowerCase();
+        switch (ext) {
+            case "appimage":
+                return "Linux app image";
+            case "tmp":
+                return "Temporary file";
+            case "iso":
+                return "Disk image";
+        }
+
+        return "idk";
+    }
+
+    if (mime == "@unknown@") {
+        const extGuess = guessByExtension(fileName);
+        if (extGuess == "idk")
+            return "Other/Unknown";
+        return extGuess;
+    }
 
     const mimeSplit = mime.split('/');
     const type = mimeSplit[0];
