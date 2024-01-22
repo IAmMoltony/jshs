@@ -31,6 +31,8 @@ const getFileType = mime => {
             switch (subType) {
                 case "vnd.microsoft.icon":
                     return "Icon file";
+                case "svg+xml":
+                    return "SVG image";
             }
             return `${subType.toUpperCase()} image`;
         case "video":
