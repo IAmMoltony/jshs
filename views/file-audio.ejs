@@ -17,10 +17,7 @@
         <script>
             const audioContainer = document.querySelector('#audioContainer');
 
-            let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
-            if (getQueryParam('folder') != undefined) {
-                rawFileUrl += `&folder=${getQueryParam('folder')}`;
-            }
+            const rawFileUrl = getRawFileUrl();
             const audioElement = new Audio(rawFileUrl);
             audioElement.controls = true;
             audioContainer.appendChild(audioElement);

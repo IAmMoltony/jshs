@@ -17,10 +17,7 @@
         <script>
             const videoContainer = document.querySelector('#videoContainer');
 
-            let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
-            if (getQueryParam('folder') != undefined) {
-                rawFileUrl += `&folder=${getQueryParam('folder')}`;
-            }
+            const rawFileUrl = getRawFileUrl();
             const videoElement = document.createElement('video');
             videoElement.src = rawFileUrl;
             videoElement.controls = true;

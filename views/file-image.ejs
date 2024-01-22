@@ -16,11 +16,7 @@
         <script src="js/viewfile-common.js"></script>
         <script>
             const img = document.querySelector('#imgFile');
-
-            let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
-            if (getQueryParam('folder') != undefined) {
-                rawFileUrl += `&folder=${getQueryParam('folder')}`;
-            }
+            const rawFileUrl = getRawFileUrl();
             img.src = rawFileUrl;
         </script>
     </body>
