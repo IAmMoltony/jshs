@@ -89,7 +89,7 @@
 
                             let fileLink;
                             if (file.isDir) {
-                                fileLink = `<a href="javascript:setFolder('${file.name}')">${file.name}</a>`;
+                                fileLink = `<a href="javascript:setFolder('${file.name}')">${file.name}/</a>`;
                             } else {
                                 let viewFileUrl = `/viewFile?name=${file.name}`;
                                 if (folder != undefined) {
