@@ -48,7 +48,7 @@ app.get('/list-uploads', (req, res) => {
         if (folder.includes('..')) {
             console.error(`someone tried to do directory traversal attack (folder is '${folder}')`);
             respObj.errCode = 1;
-            res.send(JSON.stringify(respObj));
+            res.json(respObj);
             return;
         }
     }
@@ -74,7 +74,7 @@ app.get('/list-uploads', (req, res) => {
         respObj.files.push(fileObject);
     });
 
-    res.send(JSON.stringify(respObj));
+    res.json(respObj);
 });
 
 app.get('/js/:jsFile', (req, res) => {
