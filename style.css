@@ -15,3 +15,17 @@
 * {
     font-family: sans-serif;
 }
+
+.nav-link {
+    color: green;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: lime;
+    text-decoration: underline;
+}
+
+#nav-header {
+    display: inline;
+}
