@@ -13,15 +13,10 @@
         <div id="audioContainer"></div>
 
         <script src="js/params.js"></script>
+        <script src="js/viewfile-common.js"></script>
         <script>
-            const pFileName = document.querySelector('#fileName');
             const audioContainer = document.querySelector('#audioContainer');
-            let fileNameText = getQueryParam('name');
-            if (getQueryParam('folder') != undefined) {
-                fileNameText = `${getQueryParam('folder')}/${fileNameText}`;
-            }
-            pFileName.innerText = fileNameText;
-            
+
             let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
             if (getQueryParam('folder') != undefined) {
                 rawFileUrl += `&folder=${getQueryParam('folder')}`;
