@@ -12,6 +12,11 @@
     font-weight: bold;
 }
 
+#uploadError {
+    color: red;
+    font-weight: bold;
+}
+
 * {
     font-family: sans-serif;
 }

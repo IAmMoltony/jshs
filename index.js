@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const mime = require('mime-types');
 const upload = require('./upload');
+const bodyParser = require('body-parser');
+const mv = require('mv');
 
 const app = express();
 const port = 8000;
@@ -17,6 +19,7 @@ const onSendFile = err => {
 };
 
 app.set('view engine', 'ejs');
+app.use(bodyParser());
 
 app.get('/', (req, res) => {
     res.redirect('/dashboard');
@@ -118,6 +121,19 @@ app.get('/uploadPage', (req, res) => {
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
+    const folder = req.body.folder;
+    if (folder) {
+        const realFolder = `${__dirname}/uploads/${folder}`;
+        if (folder.includes('..')) {
+            res.status(400).send('directory traversal attack???');
+            return;
+        }
+
+        mv(`${__dirname}/uploads/${req.file.filename}`, `${realFolder}/${req.file.filename}`, {mkdirp: true}, err => {
+            if (err)
+                console.error('Error moving file into folder:', err);
+        });
+    }
     res.redirect('/uploadPage?uploadOk=yes');
 });
 
