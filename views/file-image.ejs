@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jshs | View file</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <%- include('../partials/navbar.ejs'); %>
+        <h2>View image file</h2>
+        <p id="fileName"></p>
+        <img id="imgFile"></img>
+
+        <script src="js/params.js"></script>
+        <script>
+            const pFileName = document.querySelector('#fileName');
+            const img = document.querySelector('#imgFile');
+            let fileNameText = getQueryParam('name');
+            if (getQueryParam('folder') != undefined) {
+                fileNameText = `${getQueryParam('folder')}/${fileNameText}`;
+            }
+            pFileName.innerText = fileNameText;
+            
+            let rawFileUrl = `/rawFile?name=${getQueryParam('name')}`;
+            if (getQueryParam('folder') != undefined) {
+                rawFileUrl += `&folder=${getQueryParam('folder')}`;
+            }
+            img.src = rawFileUrl;
+        </script>
+    </body>
+</html>

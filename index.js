@@ -111,6 +111,8 @@ app.get('/viewFile', (req, res) => {
         res.render('file-audio', {});
     } else if (splitType[0] == 'video') {
         res.render('file-video', {});
+    } else if (splitType[0] == 'image') {
+        res.render('file-image', {});
     } else {
         res.render('file-plain', {});
     }
