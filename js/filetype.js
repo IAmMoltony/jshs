@@ -26,12 +26,12 @@ const getFileType = mime => {
             }
             return "Text";
         case "audio":
+            return `${subType.toUpperCase()} audio`;
+        case "image":
             switch (subType) {
                 case "vnd.microsoft.icon":
                     return "Icon file";
             }
-            return `${subType.toUpperCase()} audio`;
-        case "image":
             return `${subType.toUpperCase()} image`;
         case "video":
             return `${subType.toUpperCase()} video`;
@@ -108,6 +108,8 @@ const getFileType = mime => {
                     return "ZIP archive";
                 case "x-7z-compressed":
                     return "7-zip archive";
+                case "x-bittorrent":
+                    return "BitTorrent file";
             }
             break;
         case "font":
