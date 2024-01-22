@@ -64,10 +64,12 @@ app.get('/list-uploads', (req, res) => {
         const stat = fs.statSync(realName);
         const isDir = stat.isDirectory();
         const mimeType = mime.lookup(file) || '@unknown@';
+        const sz = stat.size;
         const fileObject = {
             name: file,
             isDir: isDir,
-            mimeType: mimeType
+            mimeType: mimeType,
+            size: sz
         };
         respObj.files.push(fileObject);
     });

@@ -15,6 +15,7 @@
 
         <script src="js/api.js"></script>
         <script src="js/filetype.js"></script>
+        <script src="js/filesize.js"></script>
         <script>
             const pStatus = document.querySelector('#status');
             const ftContainer = document.querySelector('#filesTableContainer');
@@ -54,7 +55,7 @@
             const makeFilesTable = () => {
                 deleteFilesTable();
                 filesTable = document.createElement('table');
-                filesTable.innerHTML = '<tr><th>Name</th><th>Type</th></tr>';
+                filesTable.innerHTML = '<tr><th>Name</th><th>Size</th><th>Type</th></tr>';
                 filesTable.classList.add('filesTable');
                 ftContainer.appendChild(filesTable);
             }
@@ -98,7 +99,8 @@
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
                             const classAttr = (i % 2 == 0) ? ' class="ftRowEven"' : '';
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
+                            const fileSize = strFileSize(file.size);
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType)}</td></tr>`
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {
