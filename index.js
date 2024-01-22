@@ -7,13 +7,17 @@ const bodyParser = require('body-parser');
 const mv = require('mv');
 const config = require('./config');
 
-console.log('Uploads folder:', config.uploadsFolder);
+console.log('config:', config);
 
 const app = express();
 const port = 8000;
 
 const sendFileOptions = {
     root: path.join(__dirname)
+};
+
+const sendUploadOptions = {
+    root: config.fileRoot
 };
 
 const onSendFile = err => {
@@ -64,7 +68,13 @@ app.get('/list-uploads', (req, res) => {
     // find files in the folder
     fs.readdirSync(uploadsBase).forEach(file => {
         const realName = `${uploadsBase}/${file}`;
-        const stat = fs.statSync(realName);
+        let stat;
+        try {
+            stat = fs.statSync(realName);
+        } catch (err) {
+            console.error('Error statting file:', err);
+            return;
+        }
         const isDir = stat.isDirectory();
         const mimeType = mime.lookup(file) || '@unknown@';
         const sz = stat.size;
@@ -106,12 +116,12 @@ app.get('/rawFile', (req, res) => {
         return;
     }
 
-    res.sendFile(`${name}`, sendFileOptions, onSendFile);
+    res.sendFile(`${name}`, sendUploadOptions, onSendFile);
 });
 
 app.get('/viewFile', (req, res) => {
     const mimeType = mime.lookup(req.query.name);
-    const splitType = mimeType.split('/');
+    const splitType = mimeType ? mimeType.split('/') : ['invalid', 'invalid'];
     if (splitType[0] == 'audio') {
         res.render('file-audio', {});
     } else if (splitType[0] == 'video') {

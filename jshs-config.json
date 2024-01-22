@@ -1,3 +1,4 @@
 {
-    "uploadsFolder": "./uploads"
+    "uploadsFolder": "./uploads",
+    "fileRoot": "*DIRNAME*"
 }
