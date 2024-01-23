@@ -9,6 +9,7 @@
         <h2>Uploads</h2>
 
         <p id="status"></p>
+        <p><input type="text" id="searchBox" onkeyup="doSearch()" placeholder="Search"></p>
         <button id="btnBackFolder">Back</button>
         <p></p>
         <div id="filesTableContainer"></div>
@@ -20,10 +21,30 @@
             const pStatus = document.querySelector('#status');
             const ftContainer = document.querySelector('#filesTableContainer');
             const btnBackFolder = document.querySelector('#btnBackFolder');
+            const searchBox = document.querySelector("#searchBox");
             btnBackFolder.style.display = "none";
+            searchBox.style.display = "none";
 
             let folder = undefined;
             let filesTable = undefined;
+
+            const doSearch = () => {
+                const filter = searchBox.value.toLowerCase();
+                const table = document.querySelector('.filesTable');
+                const trs = table.getElementsByTagName('tr');
+
+                for (let i = 0; i < trs.length; i++) {
+                    const td = trs[i].getElementsByTagName('td')[0];
+                    if (td) {
+                        const tdText = td.textContent || td.innerText;
+                        if (tdText.toLowerCase().indexOf(filter) > -1) {
+                            trs[i].style.display = "";
+                        } else {
+                            trs[i].style.display = "none";
+                        }
+                    }
+                }
+            }
 
             const prevFolder = () => {
                 if (folder == undefined)
@@ -60,8 +81,13 @@
                 ftContainer.appendChild(filesTable);
             }
 
+            const clearSearch = () => {
+                searchBox.value = '';
+            }
+
             const getUploads = () => {
                 makeFilesTable();
+                clearSearch();
                 pStatus.innerText = '[loading]';
 
                 if (folder != undefined) {
@@ -69,6 +95,8 @@
                 } else {
                     btnBackFolder.style.display = "none";
                 }
+
+                searchBox.style.display = "none";
 
                 jshsApi.getUploads(folder, data => {
                     if (data.errCode != 0) {
@@ -108,6 +136,8 @@
                         }
                     }
                 });
+
+                searchBox.style.display = "block";
             }
 
             getUploads();
