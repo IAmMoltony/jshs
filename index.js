@@ -138,7 +138,7 @@ app.get('/uploadPage', (req, res) => {
     res.render('upload', {});
 });
 
-app.get('/stats', (req, res) => {
+app.get('/getStats', (req, res) => {
     statsApi.getDiskSpace(space => {
         const diskSpace = space;
         const statsJson = {
@@ -146,6 +146,10 @@ app.get('/stats', (req, res) => {
         };
         res.json(statsJson);
     });
+});
+
+app.get('/stats', (req, res) => {
+    res.render('stats', {});
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {

@@ -32,5 +32,12 @@ const jshsApi = {
             .then(resp => resp.text())
             .then(data => cb(data))
             .catch(err => console.error('Failed to get navbar:', err));
+    },
+
+    getStats: cb => {
+        fetch('/getStats')
+            .then(resp => resp.text())
+            .then(data => cb(data))
+            .catch(err => console.error('Failed to get stats:', err));
     }
 };

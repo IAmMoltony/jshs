@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jshs | Stats</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <%- include('../partials/navbar.ejs'); %>
+        <h2>Stats</h2>
+        <p>Disk usage: <span id="diskUsage">[...]</span></p>
+
+        <script src="js/api.js"></script>
+        <script src="js/filesize.js"></script>
+        <script>
+            const spDiskUsage = document.querySelector('#diskUsage');
+
+            const updateStats = () => {
+                jshsApi.getStats(statsRaw => {
+                    const stats = JSON.parse(statsRaw);
+                    const freeSpace = stats.diskSpace.free;
+                    const totalSpace = stats.diskSpace.size;
+                    const usedSpace = totalSpace - freeSpace;
+                    const usedPercent = Math.round(((100 * usedSpace) / totalSpace) * 10) / 10;
+
+                    const strFree = strFileSize(freeSpace);
+                    const strTotal = strFileSize(totalSpace);
+                    const strUsed = strFileSize(usedSpace);
+
+                    spDiskUsage.innerText = `${strUsed}/${strTotal} (${usedPercent}%) used, ${strFree} free`;
+                });
+            }
+
+            updateStats();
+        </script>
+    </body>
+</html>
