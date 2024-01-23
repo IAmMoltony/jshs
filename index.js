@@ -142,21 +142,25 @@ app.get('/uploadPage', (req, res) => {
 app.get('/getStats', (req, res) => {
     statsApi.getDiskSpace(space => {
         let unameExec = 'uname -a';
-        if (process.platform == 'win32')
+        if (process.platform == 'win32') {
             unameExec = 'ver';
+        }
+
         childProc.exec('uname -a', (err, stdout, stderr) => {
             if (err) {
                 console.err('failed to run uname', err);
                 return;
             }
-
-            const diskSpace = space;
-            const runningOn = stdout;
-            const statsJson = {
-                diskSpace: diskSpace,
-                runningOn: runningOn
-            };
-            res.json(statsJson);
+            statsApi.getUploadSize(size => {
+                const diskSpace = space;
+                const runningOn = stdout;
+                const statsJson = {
+                    diskSpace: diskSpace,
+                    runningOn: runningOn,
+                    uploadSize: size
+                };
+                res.json(statsJson);
+            });
         });
     });
 });

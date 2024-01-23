@@ -1,4 +1,4 @@
 {
-    "uploadsFolder": "/home/moltony",
-    "fileRoot": "/"
+    "uploadsFolder": "./uploads",
+    "fileRoot": "*DIRNAME*"
 }

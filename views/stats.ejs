@@ -10,17 +10,20 @@
         <button id="btnRefresh">Refresh</button>
         <p>Disk usage: <span id="diskUsage">[...]</span></p>
         <p>Running on: <span id="runningOn">[...]</span></p>
+        <p>Total uploads size: <span id="uploadSize">[...]</span></p>
 
         <script src="js/api.js"></script>
         <script src="js/filesize.js"></script>
         <script>
             const spDiskUsage = document.querySelector('#diskUsage');
             const spRunningOn = document.querySelector('#runningOn');
+            const spUploadSize = document.querySelector('#uploadSize');
             const btnRefresh = document.querySelector('#btnRefresh');
 
             const updateStats = () => {
                 spDiskUsage.innerText = '...';
                 spRunningOn.innerText = '...';
+                spUploadSize.innerText = '...';
 
                 jshsApi.getStats(statsRaw => {
                     const stats = JSON.parse(statsRaw);
@@ -34,9 +37,11 @@
                     const strUsed = strFileSize(usedSpace);
 
                     const runningOn = stats.runningOn;
+                    const uploadSize = stats.uploadSize;
 
                     spDiskUsage.innerText = `${strUsed}/${strTotal} (${usedPercent}%) used, ${strFree} free`;
                     spRunningOn.innerText = runningOn;
+                    spUploadSize.innerText = strFileSize(uploadSize);
                 });
             }
 
