@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const mv = require('mv');
 const config = require('./config');
 const statsApi = require('./stats');
+const childProc = require('child_process');
 
 console.log('config:', config);
 
@@ -140,11 +141,23 @@ app.get('/uploadPage', (req, res) => {
 
 app.get('/getStats', (req, res) => {
     statsApi.getDiskSpace(space => {
-        const diskSpace = space;
-        const statsJson = {
-            diskSpace: diskSpace
-        };
-        res.json(statsJson);
+        let unameExec = 'uname -a';
+        if (process.platform == 'win32')
+            unameExec = 'ver';
+        childProc.exec('uname -a', (err, stdout, stderr) => {
+            if (err) {
+                console.err('failed to run uname', err);
+                return;
+            }
+
+            const diskSpace = space;
+            const runningOn = stdout;
+            const statsJson = {
+                diskSpace: diskSpace,
+                runningOn: runningOn
+            };
+            res.json(statsJson);
+        });
     });
 });
 
