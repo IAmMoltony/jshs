@@ -6,6 +6,7 @@ const upload = require('./upload');
 const bodyParser = require('body-parser');
 const mv = require('mv');
 const config = require('./config');
+const statsApi = require('./stats');
 
 console.log('config:', config);
 
@@ -135,6 +136,16 @@ app.get('/viewFile', (req, res) => {
 
 app.get('/uploadPage', (req, res) => {
     res.render('upload', {});
+});
+
+app.get('/stats', (req, res) => {
+    statsApi.getDiskSpace(space => {
+        const diskSpace = space;
+        const statsJson = {
+            diskSpace: diskSpace
+        };
+        res.json(statsJson);
+    });
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
