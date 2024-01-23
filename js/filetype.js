@@ -1,9 +1,11 @@
 const getFileType = (mime, fileName) => {
     const guessByExtension = name => {
+        if (name[0] == '.')
+            return "Dotfile";
+
         const extSplit = name.split('.');
         if (extSplit.length == 1)
             return "idk";
-        console.log(extSplit);
 
         ext = extSplit[extSplit.length - 1].toLowerCase();
         switch (ext) {
