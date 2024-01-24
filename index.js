@@ -146,7 +146,7 @@ app.get('/getStats', (_req, res) => {
             unameExec = 'ver';
         }
 
-        childProc.exec(unameExec, (err, stdout, _stderr) => {
+        childProc.exec(unameExec, (err, stdout) => {
             if (err) {
                 console.err('failed to run uname', err);
                 return;
