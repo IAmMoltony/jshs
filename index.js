@@ -28,7 +28,7 @@ const onSendFile = err => {
 };
 
 app.set("view engine", "ejs");
-app.use(bodyParser());
+app.use(bodyParser.json({extended: true}));
 
 app.get("/", (_req, res) => {
     res.redirect("/dashboard");
