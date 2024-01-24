@@ -1,9 +1,9 @@
-const checkDiskSpace = require('check-disk-space').default;
-const config = require('./config');
-const getFolderSize = require('get-folder-size');
+const checkDiskSpace = require("check-disk-space").default;
+const config = require("./config");
+const getFolderSize = require("get-folder-size");
 
 //checkDiskSpace(config.uploadsFolder)
- //   .then(spc => console.log(spc));
+//   .then(spc => console.log(spc));
 
 const statsApi = {
     getDiskSpace: cb => {
