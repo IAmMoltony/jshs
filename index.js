@@ -30,15 +30,15 @@ const onSendFile = err => {
 app.set('view engine', 'ejs');
 app.use(bodyParser());
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.redirect('/dashboard');
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', (_req, res) => {
     res.render('dashboard', {});
 });
 
-app.get('/uploads', (req, res) => {
+app.get('/uploads', (_req, res) => {
     res.render('uploads', {});
 });
 
@@ -96,7 +96,7 @@ app.get('/js/:jsFile', (req, res) => {
     res.sendFile(`./js/${req.params.jsFile}`, sendFileOptions, onSendFile);
 });
 
-app.get('/style.css', (req, res) => {
+app.get('/style.css', (_req, res) => {
     res.sendFile('./style.css', sendFileOptions, onSendFile);
 });
 
@@ -135,18 +135,18 @@ app.get('/viewFile', (req, res) => {
     }
 });
 
-app.get('/uploadPage', (req, res) => {
+app.get('/uploadPage', (_req, res) => {
     res.render('upload', {});
 });
 
-app.get('/getStats', (req, res) => {
+app.get('/getStats', (_req, res) => {
     statsApi.getDiskSpace(space => {
         let unameExec = 'uname -a';
         if (process.platform == 'win32') {
             unameExec = 'ver';
         }
 
-        childProc.exec('uname -a', (err, stdout, stderr) => {
+        childProc.exec(unameExec, (err, stdout, _stderr) => {
             if (err) {
                 console.err('failed to run uname', err);
                 return;
@@ -165,7 +165,7 @@ app.get('/getStats', (req, res) => {
     });
 });
 
-app.get('/stats', (req, res) => {
+app.get('/stats', (_req, res) => {
     res.render('stats', {});
 });
 
