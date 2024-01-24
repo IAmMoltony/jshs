@@ -7,7 +7,7 @@ const getFileType = (mime, fileName) => {
         if (extSplit.length == 1)
             return "idk";
 
-        ext = extSplit[extSplit.length - 1].toLowerCase();
+        const ext = extSplit[extSplit.length - 1].toLowerCase();
         switch (ext) {
             case "appimage":
                 return "Linux app image";
