@@ -1,5 +1,5 @@
 {
-    "uploadsFolder": "./uploads",
-    "fileRoot": "*DIRNAME*",
+    "uploadsFolder": "/home/moltony",
+    "fileRoot": "/",
     "port": 8000
 }
