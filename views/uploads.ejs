@@ -17,6 +17,7 @@
         <script src="js/api.js"></script>
         <script src="js/filetype.js"></script>
         <script src="js/filesize.js"></script>
+        <script src="js/params.js"></script>
         <script>
             const pStatus = document.querySelector("#status");
             const ftContainer = document.querySelector("#filesTableContainer");
@@ -24,6 +25,8 @@
             const searchBox = document.querySelector("#searchBox");
             btnBackFolder.style.display = "none";
             searchBox.style.display = "none";
+
+            const startFolder = getQueryParam("startFolder");
 
             let folder = undefined;
             let filesTable = undefined;
@@ -149,7 +152,7 @@
                 searchBox.style.display = "block";
             };
 
-            getUploads();
+            setFolder(startFolder);
         </script>
     </body>
 </html>

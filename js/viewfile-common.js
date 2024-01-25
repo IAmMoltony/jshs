@@ -5,6 +5,13 @@
         fileNameText = `${getQueryParam("folder")}/${fileNameText}`;
     }
     pFileName.innerText = fileNameText;
+
+    let backHref = "/uploads";
+    if (getQueryParam("folder") != undefined) {
+        backHref = `/uploads?startFolder=${getQueryParam("folder")}`;
+    }
+    const backLink = document.querySelector("#viewfileBackLink");
+    backLink.setAttribute("href", backHref);
 })();
 
 const getRawFileUrl = () => {
