@@ -232,6 +232,8 @@ app.get("/rename", (req, res) => {
     });
 });
 
+app.use("/hljs", express.static("./highlightjs"));
+
 app.listen(port, () => {
     console.log(`jshs is running on port ${port}`);
 });

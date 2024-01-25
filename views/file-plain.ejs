@@ -3,6 +3,7 @@
     <head>
         <title>jshs | View file</title>
         <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/hljs/styles/default.css">
     </head>
     <body>
         <%- include('../partials/navbar.ejs'); %>
@@ -10,16 +11,18 @@
         <%- include('../partials/viewfile-actions.ejs'); %>
         <p id="fileName"></p>
         <hr>
-        <pre id="fileContents"></pre>
+        <pre><code id="fileCode"></code></pre>
 
         <script src="js/params.js"></script>
         <script src="js/api.js"></script>
         <script src="js/viewfile-common.js"></script>
+        <script src="/hljs/highlight.min.js"></script>
         <script>
-            const fileContents = document.querySelector("#fileContents");
+            const fileCode = document.querySelector("#fileCode");
 
             jshsApi.rawFile(getQueryParam("folder"), getQueryParam("name"), data => {
-                fileContents.innerText = data;
+                fileCode.textContent = data;
+                hljs.highlightAll();
             });
         </script>
     </body>
