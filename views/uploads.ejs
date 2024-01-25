@@ -96,6 +96,10 @@
                 getUploads();
             };
 
+            const dlFile = fileName => {
+                jshsApi.dlFile(folder, fileName);
+            };
+
             const getUploads = () => {
                 makeFilesTable();
                 clearSearch();
@@ -140,7 +144,8 @@
                             const classAttr = (i % 2 == 0) ? " class=\"ftRowEven\"" : "";
                             const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}</td></tr>`;
+                            const dlLink = file.isDir ? "" : ` | <a href="javascript:dlFile('${file.name}')">Download</a>`;
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}</td></tr>`;
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {

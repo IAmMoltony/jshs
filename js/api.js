@@ -59,5 +59,28 @@ const jshsApi = {
             .then(resp => resp.text())
             .then(data => cb(data))
             .catch(err => console.error("Failed to rename file:", err));
+    },
+
+    dlFile: (folder, fileName) => {
+        if (!fileName) {
+            console.error("Please specify file name");
+            return;
+        }
+
+        let params = `?name=${fileName}&download=yes`;
+        if (folder)
+            params += `&folder=${folder}`;
+
+        fetch(`/rawFile${params}`)
+            .then(resp => resp.blob())
+            .then(data => {
+                const a = document.createElement("a");
+                a.href = window.URL.createObjectURL(data);
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(err => console.error("Failed to download file:", err));
     }
 };
