@@ -236,6 +236,7 @@ app.get("/rename", (req, res) => {
 
 app.use("/hljs", express.static("./highlightjs"));
 app.use("/js", express.static("./js"));
+app.use("/img", express.static("./img"));
 
 app.listen(port, () => {
     console.log(`jshs is running on port ${port}`);
