@@ -92,10 +92,6 @@ app.get("/list-uploads", (req, res) => {
     res.json(respObj);
 });
 
-app.get("/js/:jsFile", (req, res) => {
-    res.sendFile(`./js/${req.params.jsFile}`, sendFileOptions, onSendFile);
-});
-
 app.get("/style.css", (_req, res) => {
     res.sendFile("./style.css", sendFileOptions, onSendFile);
 });
@@ -239,6 +235,7 @@ app.get("/rename", (req, res) => {
 });
 
 app.use("/hljs", express.static("./highlightjs"));
+app.use("/js", express.static("./js"));
 
 app.listen(port, () => {
     console.log(`jshs is running on port ${port}`);
