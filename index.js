@@ -118,6 +118,12 @@ app.get("/rawFile", (req, res) => {
         return;
     }
 
+    const isDownload = req.query.download;
+    if (isDownload) {
+        const fileName = req.query.name;
+        res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
+    }
+
     res.sendFile(`${name}`, sendUploadOptions, onSendFile);
 });
 
