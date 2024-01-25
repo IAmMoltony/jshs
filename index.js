@@ -8,8 +8,7 @@ const mv = require("mv");
 const config = require("./config");
 const statsApi = require("./stats");
 const childProc = require("child_process");
-
-console.log("config:", config);
+const morgan = require("morgan");
 
 const app = express();
 const port = config.port;
@@ -29,6 +28,7 @@ const onSendFile = err => {
 
 app.set("view engine", "ejs");
 app.use(bodyParser.json({extended: true}));
+app.use(morgan("dev"));
 
 app.get("/", (_req, res) => {
     res.redirect("/dashboard");
