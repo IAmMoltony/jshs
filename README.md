@@ -22,3 +22,9 @@ Configuration is done using the `jshs-config.js` file.
   set this to `/`. If the uploads folder is relative to the jshs root directory,
   then set to `*DIRNAME*`.
 - `port`: The port on which the server will run at. 8000 is usually fine.
+
+## Features
+
+- Web-based interface
+- Streaming uploaded video and audio
+- Basic file manager
