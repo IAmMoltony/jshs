@@ -76,13 +76,21 @@
             const makeFilesTable = () => {
                 deleteFilesTable();
                 filesTable = document.createElement('table');
-                filesTable.innerHTML = '<tr><th>Name</th><th>Size</th><th>Type</th></tr>';
+                filesTable.innerHTML = '<tr><th>Name</th><th>Size</th><th>Type</th><th>Actions</th></tr>';
                 filesTable.classList.add('filesTable');
                 ftContainer.appendChild(filesTable);
             }
 
             const clearSearch = () => {
                 searchBox.value = '';
+            }
+
+            const renameFile = fileName => {
+                const newName = prompt(`New name for file '${name}':`);
+                jshsApi.renameFile(folder, fileName, newName, response => {
+                    alert(response);
+                });
+                getUploads();
             }
 
             const getUploads = () => {
@@ -127,8 +135,9 @@
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
                             const classAttr = (i % 2 == 0) ? ' class="ftRowEven"' : '';
+                            const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td></tr>`
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}</td></tr>`
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {

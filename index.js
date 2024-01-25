@@ -202,6 +202,16 @@ app.get("/rename", (req, res) => {
         return;
     }
 
+    if (filename.includes("/")) {
+        res.status(400).send("Filename must not contain slashes");
+        return;
+    }
+
+    if (newName.includes("/")) {
+        res.status(400).send("New name must not contain slashes");
+        return;
+    }
+
     if (folder) {
         if (folder.includes("..")) {
             res.status(400).send("Directory traversal attack i think");

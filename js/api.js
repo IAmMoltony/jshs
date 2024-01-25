@@ -39,5 +39,25 @@ const jshsApi = {
             .then(resp => resp.text())
             .then(data => cb(data))
             .catch(err => console.error("Failed to get stats:", err));
+    },
+
+    renameFile: (folder, fileName, newName, cb) => {
+        if (!fileName) {
+            cb("Please specify the file name");
+            return;
+        }
+        if (!newName) {
+            cb("Please specify the new name");
+            return;
+        }
+
+        let params = `?filename=${fileName}&newName=${newName}`;
+        if (folder)
+            params += `&folder=${folder}`;
+
+        fetch(`/rename${params}`)
+            .then(resp => resp.text())
+            .then(data => cb(data))
+            .catch(err => console.error("Failed to rename file:", err));
     }
 };
