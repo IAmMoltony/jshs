@@ -186,6 +186,42 @@ app.post("/upload", upload.single("file"), (req, res) => {
     res.redirect("/uploadPage?uploadOk=yes");
 });
 
+app.get("/rename", (req, res) => {
+    const folder = req.query.folder;
+    const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
+    const filename = req.query.filename;
+    const newName = req.query.newName;
+
+    if (!filename) {
+        res.status(400).send("Filename argument not set");
+        return;
+    }
+
+    if (!newName) {
+        res.status(400).send("New name argument not set");
+        return;
+    }
+
+    if (folder) {
+        if (folder.includes("..")) {
+            res.status(400).send("Directory traversal attack i think");
+            return;
+        }
+    }
+
+    console.log(`Renaming file ${realFolder}/${filename} to ${realFolder}/${newName}`);
+
+    mv(`${realFolder}/${filename}`, `${realFolder}/${newName}`, err => {
+        if (err) {
+            console.error("Failed to move file", err);
+            res.send(422).send("Could not rename file. Please check the logs.");
+            return;
+        }
+
+        res.send("Okay");
+    });
+});
+
 app.listen(port, () => {
     console.log(`jshs is running on port ${port}`);
 });
