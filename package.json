@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "moltony",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.20.2",
     "check-disk-space": "^3.4.0",

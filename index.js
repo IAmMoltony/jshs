@@ -171,6 +171,10 @@ app.get("/stats", (_req, res) => {
     res.render("stats", {});
 });
 
+app.get("/settings", (_req, res) => {
+    res.render("settings", {});
+});
+
 app.post("/upload", upload.single("file"), (req, res) => {
     const folder = req.body.folder;
     if (folder) {
