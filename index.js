@@ -12,7 +12,7 @@ const childProc = require("child_process");
 console.log("config:", config);
 
 const app = express();
-const port = 8000;
+const port = config.port;
 
 const sendFileOptions = {
     root: path.join(__dirname)

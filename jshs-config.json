@@ -1,4 +1,5 @@
 {
     "uploadsFolder": "./uploads",
-    "fileRoot": "*DIRNAME*"
+    "fileRoot": "*DIRNAME*",
+    "port": 8000
 }
