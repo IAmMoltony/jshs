@@ -15,10 +15,10 @@
         <script src="js/params.js"></script>
         <script src="js/viewfile-common.js"></script>
         <script>
-            const videoContainer = document.querySelector('#videoContainer');
+            const videoContainer = document.querySelector("#videoContainer");
 
             const rawFileUrl = getRawFileUrl();
-            const videoElement = document.createElement('video');
+            const videoElement = document.createElement("video");
             videoElement.src = rawFileUrl;
             videoElement.controls = true;
             videoContainer.appendChild(videoElement);

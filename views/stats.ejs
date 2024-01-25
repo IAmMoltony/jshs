@@ -15,15 +15,15 @@
         <script src="js/api.js"></script>
         <script src="js/filesize.js"></script>
         <script>
-            const spDiskUsage = document.querySelector('#diskUsage');
-            const spRunningOn = document.querySelector('#runningOn');
-            const spUploadSize = document.querySelector('#uploadSize');
-            const btnRefresh = document.querySelector('#btnRefresh');
+            const spDiskUsage = document.querySelector("#diskUsage");
+            const spRunningOn = document.querySelector("#runningOn");
+            const spUploadSize = document.querySelector("#uploadSize");
+            const btnRefresh = document.querySelector("#btnRefresh");
 
             const updateStats = () => {
-                spDiskUsage.innerText = '...';
-                spRunningOn.innerText = '...';
-                spUploadSize.innerText = '...';
+                spDiskUsage.innerText = "...";
+                spRunningOn.innerText = "...";
+                spUploadSize.innerText = "...";
 
                 jshsApi.getStats(statsRaw => {
                     const stats = JSON.parse(statsRaw);
@@ -43,7 +43,7 @@
                     spRunningOn.innerText = runningOn;
                     spUploadSize.innerText = strFileSize(uploadSize);
                 });
-            }
+            };
 
             updateStats();
             btnRefresh.onclick = updateStats;

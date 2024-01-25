@@ -18,9 +18,9 @@
         <script src="js/filetype.js"></script>
         <script src="js/filesize.js"></script>
         <script>
-            const pStatus = document.querySelector('#status');
-            const ftContainer = document.querySelector('#filesTableContainer');
-            const btnBackFolder = document.querySelector('#btnBackFolder');
+            const pStatus = document.querySelector("#status");
+            const ftContainer = document.querySelector("#filesTableContainer");
+            const btnBackFolder = document.querySelector("#btnBackFolder");
             const searchBox = document.querySelector("#searchBox");
             btnBackFolder.style.display = "none";
             searchBox.style.display = "none";
@@ -30,11 +30,11 @@
 
             const doSearch = () => {
                 const filter = searchBox.value.toLowerCase();
-                const table = document.querySelector('.filesTable');
-                const trs = table.getElementsByTagName('tr');
+                const table = document.querySelector(".filesTable");
+                const trs = table.getElementsByTagName("tr");
 
                 for (let i = 0; i < trs.length; i++) {
-                    const td = trs[i].getElementsByTagName('td')[0];
+                    const td = trs[i].getElementsByTagName("td")[0];
                     if (td) {
                         const tdText = td.textContent || td.innerText;
                         if (tdText.toLowerCase().indexOf(filter) > -1) {
@@ -44,19 +44,19 @@
                         }
                     }
                 }
-            }
+            };
 
             const prevFolder = () => {
                 if (folder == undefined)
                     return;
 
-                const folderSplit = folder.split('/');
+                const folderSplit = folder.split("/");
                 if (folderSplit.length == 1)
                     folder = undefined;
                 else
                     folder = folderSplit[folderSplit.length - 2];
                 getUploads();
-            }
+            };
 
             btnBackFolder.onclick = prevFolder;
 
@@ -66,24 +66,24 @@
                 else
                     folder += `/${f}`;
                 getUploads();
-            }
+            };
 
             const deleteFilesTable = () => {
                 if (filesTable != undefined)
                     filesTable.remove();
-            }
+            };
 
             const makeFilesTable = () => {
                 deleteFilesTable();
-                filesTable = document.createElement('table');
-                filesTable.innerHTML = '<tr><th>Name</th><th>Size</th><th>Type</th><th>Actions</th></tr>';
-                filesTable.classList.add('filesTable');
+                filesTable = document.createElement("table");
+                filesTable.innerHTML = "<tr><th>Name</th><th>Size</th><th>Type</th><th>Actions</th></tr>";
+                filesTable.classList.add("filesTable");
                 ftContainer.appendChild(filesTable);
-            }
+            };
 
             const clearSearch = () => {
-                searchBox.value = '';
-            }
+                searchBox.value = "";
+            };
 
             const renameFile = fileName => {
                 const newName = prompt(`New name for file '${name}':`);
@@ -91,12 +91,12 @@
                     alert(response);
                 });
                 getUploads();
-            }
+            };
 
             const getUploads = () => {
                 makeFilesTable();
                 clearSearch();
-                pStatus.innerText = '[loading]';
+                pStatus.innerText = "[loading]";
 
                 if (folder != undefined) {
                     btnBackFolder.style.display = "block";
@@ -109,9 +109,9 @@
                 jshsApi.getUploads(folder, data => {
                     if (data.errCode != 0) {
                         switch (data.errCode) {
-                            case 1:
-                                pStatus.innerText = 'Error: directory traversal attack';
-                                break;
+                        case 1:
+                            pStatus.innerText = "Error: directory traversal attack";
+                            break;
                         }
                     } else {
                         // count files
@@ -134,10 +134,10 @@
                                 }
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
-                            const classAttr = (i % 2 == 0) ? ' class="ftRowEven"' : '';
+                            const classAttr = (i % 2 == 0) ? " class=\"ftRowEven\"" : "";
                             const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}</td></tr>`
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}</td></tr>`;
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {
@@ -147,7 +147,7 @@
                 });
 
                 searchBox.style.display = "block";
-            }
+            };
 
             getUploads();
         </script>
