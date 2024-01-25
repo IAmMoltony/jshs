@@ -35,7 +35,7 @@ const getFileType = (mime, fileName) => {
     case "text":
         switch (subType) {
         case "css":
-            return "CSS";
+            return "CSS file";
         case "csv":
             return "CSV spreadsheet";
         case "html":
