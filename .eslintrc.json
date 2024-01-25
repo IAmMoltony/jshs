@@ -26,5 +26,11 @@
             "error",
             "always"
         ]
+    },
+    "plugins": [
+        "html"
+    ],
+    "settings": {
+        "html/html-extensions": [".ejs"]
     }
 }
