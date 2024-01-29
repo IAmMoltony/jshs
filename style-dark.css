@@ -1,3 +1,7 @@
+body {
+    background-color: #333333;
+}
+
 .filesTable {
     border-collapse: collapse;
 }
@@ -12,11 +16,11 @@
 }
 
 .ftRowEven {
-    background-color: #b0ffc4;
+    background-color: #537a5d;
 }
 
 #uploadOk {
-    color: green;
+    color: lime;
     font-weight: bold;
 }
 
@@ -31,15 +35,20 @@
 
 * {
     font-family: sans-serif;
+    color: white;
+}
+
+button, input[type=submit] {
+    color: black;
 }
 
 .act-link {
-    color: green;
+    color: lime;
     text-decoration: none;
 }
 
 .act-link:hover {
-    color: lime;
+    color: lightgreen;
     text-decoration: underline;
 }
 
@@ -49,4 +58,8 @@
 
 #user-settings-box {
     width: fit-content;
+}
+
+input[type=text] {
+    background-color: #111111;
 }

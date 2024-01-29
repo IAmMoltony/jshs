@@ -9,5 +9,29 @@
     <body>
         <%- include('../partials/navbar.ejs'); %>
         <h2>Settings</h2>
+
+        <fieldset id="user-settings-box">
+            <legend>User Settings</legend>
+            <span style="display: none; color: red; font-weight: bold" id="usSettingsError"></span>
+            <form action="/setTheme" method="post">
+                <span>Theme: </span>
+                <input type="radio" id="usRadioDarkMode" name="usTheme" value="dark">
+                <label for="usRadioDarkMode">Dark</label>
+                <input type="radio" id="usRadioLightMode" name="usTheme" value="light">
+                <label for="usRadioLightMode">Light</label>
+                &nbsp;
+                <input type="submit" name="usThemeSubmit" id="usThemeSubmit" value="Set"><br>
+                <span>Current theme is <b><%= colorTheme %></b>.</span>
+            </form>
+        </fieldset>
+
+        <script src="js/params.js"></script>
+        <script>
+            if (getQueryParam("usInvalidTheme")) {
+                const errorSpan = document.querySelector("#usSettingsError");
+                errorSpan.innerHTML = "Please set a valid theme<br><br>";
+                errorSpan.style.display = "";
+            }
+        </script>
     </body>
 </html>

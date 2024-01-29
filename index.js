@@ -9,6 +9,7 @@ const config = require("./config");
 const statsApi = require("./stats");
 const childProc = require("child_process");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const port = config.port;
@@ -26,9 +27,16 @@ const onSendFile = err => {
         console.error("Error sending file", err);
 };
 
+const getColorTheme = req => {
+    const theme = req.cookies.jshsTheme;
+    return theme || "light";
+};
+
 app.set("view engine", "ejs");
-app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan("dev"));
+app.use(cookieParser());
 
 app.get("/", (_req, res) => {
     res.redirect("/dashboard");
@@ -92,8 +100,12 @@ app.get("/list-uploads", (req, res) => {
     res.json(respObj);
 });
 
-app.get("/style.css", (_req, res) => {
-    res.sendFile("./style.css", sendFileOptions, onSendFile);
+app.get("/style.css", (req, res) => {
+    if (getColorTheme(req) == "dark") {
+        res.sendFile("./style-dark.css", sendFileOptions, onSendFile);
+    } else {
+        res.sendFile("./style.css", sendFileOptions, onSendFile);
+    }
 });
 
 app.get("/rawFile", (req, res) => {
@@ -171,8 +183,8 @@ app.get("/stats", (_req, res) => {
     res.render("stats", {});
 });
 
-app.get("/settings", (_req, res) => {
-    res.render("settings", {});
+app.get("/settings", (req, res) => {
+    res.render("settings", {colorTheme: getColorTheme(req)});
 });
 
 app.post("/upload", upload.single("file"), (req, res) => {
@@ -236,6 +248,28 @@ app.get("/rename", (req, res) => {
 
         res.send("Okay");
     });
+});
+
+app.post("/setTheme", (req, res) => {
+    const selectedTheme = req.body.usTheme;
+
+    // check if it's a real theme
+    if (selectedTheme != "light" && selectedTheme != "dark") {
+        console.log("Invalid theme", selectedTheme);
+        res.redirect("/settings?usInvalidTheme=yes");
+        return;
+    }
+
+    // set theme cookie
+    const expireTime = new Date();
+    expireTime.setFullYear(expireTime.getFullYear() + 1);
+
+    res.cookie("jshsTheme", selectedTheme, {
+        expires: expireTime,
+        httpOnly: true,
+    });
+
+    res.redirect("/settings");
 });
 
 app.use("/hljs", express.static("./highlightjs"));
