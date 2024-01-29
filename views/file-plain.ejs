@@ -3,7 +3,11 @@
     <head>
         <title>jshs | View file</title>
         <link rel="stylesheet" href="/style.css">
-        <link rel="stylesheet" href="/hljs/styles/default.css">
+        <% if (colorTheme == "dark") { %>
+        <link rel="stylesheet" href="/hljs/styles/dark.min.css">
+        <% } else { %>
+        <link rel="stylesheet" href="/hljs/styles/default.min.css">
+        <% } %>
         <link rel="icon" type="image/png" href="/img/favicon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>

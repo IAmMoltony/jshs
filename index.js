@@ -145,7 +145,7 @@ app.get("/viewFile", (req, res) => {
     } else if (splitType[0] == "image") {
         res.render("file-image", {});
     } else {
-        res.render("file-plain", {});
+        res.render("file-plain", {colorTheme: getColorTheme(req)});
     }
 });
 
