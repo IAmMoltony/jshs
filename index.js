@@ -278,6 +278,10 @@ app.post("/setTheme", (req, res) => {
     res.redirect("/settings");
 });
 
+app.get("/unzip", (req, res) => {
+
+});
+
 app.use("/hljs", express.static("./highlightjs"));
 app.use("/js", express.static("./js"));
 app.use("/img", express.static("./img"));
