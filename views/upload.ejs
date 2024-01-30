@@ -14,11 +14,11 @@
             <label for="folder">Folder:&nbsp;</label><input type="text" id="folder" name="folder" placeholder="Leave empty for root folder"><p></p>
             <button type="submit">Upload</button>
         </form>
-        <p id="uploadOk">File uploaded successfully.</p>
+        <p id="upload-ok">File uploaded successfully.</p>
 
         <script src='js/params.js'></script>
         <script>
-            const pUploadOk = document.querySelector("#uploadOk");
+            const pUploadOk = document.querySelector("#upload-ok");
             if (getQueryParam("uploadOk") != "yes") {
                 pUploadOk.style.display = "none";
             }

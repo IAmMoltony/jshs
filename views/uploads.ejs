@@ -35,7 +35,7 @@
 
             const doSearch = () => {
                 const filter = searchBox.value.toLowerCase();
-                const table = document.querySelector(".filesTable");
+                const table = document.querySelector(".files-table");
                 const trs = table.getElementsByTagName("tr");
 
                 for (let i = 0; i < trs.length; i++) {
@@ -82,7 +82,7 @@
                 deleteFilesTable();
                 filesTable = document.createElement("table");
                 filesTable.innerHTML = "<tr><th>Name</th><th>Size</th><th>Type</th><th>Actions</th></tr>";
-                filesTable.classList.add("filesTable");
+                filesTable.classList.add("files-table");
                 ftContainer.appendChild(filesTable);
             };
 
@@ -143,7 +143,7 @@
                                 }
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
-                            const classAttr = (i % 2 == 0) ? " class=\"ftRowEven\"" : "";
+                            const classAttr = (i % 2 == 0) ? " class=\"ft-row-even\"" : "";
                             const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
                             const dlLink = file.isDir ? "" : ` | <a href="javascript:dlFile('${file.name}')">Download</a>`;

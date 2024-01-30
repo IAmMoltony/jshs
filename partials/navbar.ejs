@@ -26,11 +26,15 @@
 <script>
 const mobileMenuLink = document.querySelector("#nav-mobile-menu-btn");
 const mobileMenu = document.querySelector("#mobile-menu");
-mobileMenuLink.onclick = e => {
-    if (mobileMenu.style.display == "none")
-        mobileMenu.style.display = "";
-    else
-        mobileMenu.style.display = "none";
-    e.preventDefault();
-};
+
+if (mobileMenuLink) {
+    // only set if on mobile
+    mobileMenuLink.onclick = e => {
+        if (mobileMenu.style.display == "none")
+            mobileMenu.style.display = "";
+        else
+            mobileMenu.style.display = "none";
+        e.preventDefault();
+    };
+}
 </script>

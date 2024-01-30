@@ -17,14 +17,14 @@
         <%- include('../partials/viewfile-actions.ejs'); %>
         <p id="fileName"></p>
         <hr>
-        <pre><code id="fileCode"></code></pre>
+        <pre><code id="file-code"></code></pre>
 
         <script src="js/params.js"></script>
         <script src="js/api.js"></script>
         <script src="js/viewfile-common.js"></script>
         <script src="/hljs/highlight.min.js"></script>
         <script>
-            const fileCode = document.querySelector("#fileCode");
+            const fileCode = document.querySelector("#file-code");
 
             jshsApi.rawFile(getQueryParam("folder"), getQueryParam("name"), data => {
                 fileCode.textContent = data;

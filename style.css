@@ -1,36 +1,32 @@
-.filesTable {
+.files-table {
     border-collapse: collapse;
 }
 
-.filesTable td, th {
+.files-table td, th {
     border: 1px solid black;
     padding: 4px;
 }
 
-.filesTable th {
+.files-table th {
     text-align: left;
 }
 
-.ftRowEven {
+.ft-row-even {
     background-color: #b0ffc4;
 }
 
-#uploadOk {
+#upload-ok {
     color: green;
     font-weight: bold;
 }
 
-#uploadError {
-    color: red;
-    font-weight: bold;
-}
-
-#fileCode, #fileCode * {
-    font-family: monospace;
-}
-
 * {
     font-family: sans-serif;
+}
+
+
+#file-code, #file-code * {
+    font-family: monospace;
 }
 
 .act-link {

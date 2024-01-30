@@ -1,36 +1,27 @@
 body {
-    background-color: #333333;
+    background-color: #333;
 }
 
-.filesTable {
+.files-table {
     border-collapse: collapse;
 }
 
-.filesTable td, th {
+.files-table td, th {
     border: 1px solid black;
     padding: 4px;
 }
 
-.filesTable th {
+.files-table th {
     text-align: left;
 }
 
-.ftRowEven {
+.ft-row-even {
     background-color: #537a5d;
 }
 
-#uploadOk {
+#upload-ok {
     color: lime;
     font-weight: bold;
-}
-
-#uploadError {
-    color: red;
-    font-weight: bold;
-}
-
-#fileCode, #fileCode * {
-    font-family: monospace;
 }
 
 * {
@@ -38,7 +29,12 @@ body {
     color: white;
 }
 
-button, input[type=submit] {
+
+#file-code, #file-code * {
+    font-family: monospace;
+}
+
+button, input[type="submit"] {
     color: black;
 }
 
@@ -60,8 +56,8 @@ button, input[type=submit] {
     width: fit-content;
 }
 
-input[type=text] {
-    background-color: #111111;
+input[type="text"] {
+    background-color: #111;
 }
 
 #nav-mobile-menu-btn {
