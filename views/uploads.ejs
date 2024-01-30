@@ -102,6 +102,16 @@
                 jshsApi.dlFile(folder, fileName);
             };
 
+            const unzipFile = fileName => {
+                jshsApi.unzipFile(folder, fileName, resp => {
+                    if (resp == "OK") {
+                        getUploads();
+                    } else {
+                        alert(`Extract failed: ${resp}`);
+                    }
+                });
+            };
+
             const getUploads = () => {
                 makeFilesTable();
                 clearSearch();
@@ -147,7 +157,8 @@
                             const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
                             const dlLink = file.isDir ? "" : ` | <a href="javascript:dlFile('${file.name}')">Download</a>`;
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}</td></tr>`;
+                            const unzLink = file.mimeType == "application/zip" ? ` | <a href="javascript:unzipFile('${file.name}');">Extract</a>` : "";
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}${unzLink}</td></tr>`;
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {

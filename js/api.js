@@ -82,5 +82,21 @@ const jshsApi = {
                 document.body.removeChild(a);
             })
             .catch(err => console.error("Failed to download file:", err));
+    },
+
+    unzipFile: (folder, fileName, cb) => {
+        if (!fileName) {
+            console.error("Please specify file name");
+            return;
+        }
+
+        let params = `?zipName=${fileName}`;
+        if (folder)
+            params += `&folder=${folder}`;
+
+        fetch(`/unzip${params}`)
+            .then(resp => resp.text())
+            .then(data => cb(data))
+            .catch(err => console.error("Failed to unzip file:", err));
     }
 };

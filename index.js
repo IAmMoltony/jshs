@@ -306,8 +306,6 @@ app.get("/unzip", (req, res) => {
     }
     fs.mkdirSync(outFolder);
 
-    console.log(`Unzipping ${realFile} into ${outFolder}`);
-
     const zip = new AdmZip(realFile);
     zip.extractAllTo(outFolder);
 
