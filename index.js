@@ -10,6 +10,7 @@ const statsApi = require("./stats");
 const childProc = require("child_process");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const AdmZip = require("adm-zip");
 
 const app = express();
 const port = config.port;
@@ -277,7 +278,50 @@ app.post("/setTheme", (req, res) => {
 });
 
 app.get("/unzip", (req, res) => {
+    const folder = req.query.folder;
+    const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
+    const zipName = req.query.zipName;
 
+    if (!zipName) {
+        res.status(400).send("Zip name argument not set");
+        return;
+    }
+
+    if (zipName.includes("/")) {
+        res.status(400).send("Zip name must not contain slashes");
+        return;
+    }
+
+    const realFile = `${realFolder}/${zipName}`;
+    if (realFile.includes("..")) {
+        res.status(400).send("Directory traversal attack");
+        return;
+    }
+
+    const name = path.parse(realFile).name;
+    const outFolder = `${realFolder}/${name}`;
+    if (fs.existsSync(outFolder)) {
+        res.status(409).send("Zip folder already exists");
+        return;
+    }
+    fs.mkdirSync(outFolder);
+
+    console.log(`Unzipping ${realFile} into ${outFolder}`);
+
+    const zip = new AdmZip(realFile);
+    const entries = zip.getEntries();
+
+    entries.forEach(entry => {
+        const name = entry.entryName;
+        const dirName = path.dirname(name);
+        const realDirName = `${outFolder}/${dirName}`;
+        const realFileName = `${outFolder}/${name}`;
+        fs.mkdirSync(realDirName, {recursive: true});
+        if (!entry.isDirectory)
+            fs.writeFileSync(realFileName, entry.getData());
+    });
+
+    res.send("OK");
 });
 
 app.use("/hljs", express.static("./highlightjs"));
