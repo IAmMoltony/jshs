@@ -32,6 +32,12 @@ const getColorTheme = req => {
     return theme || "light";
 };
 
+const isMobileUser = req => {
+    const ua = req.get("User-Agent");
+    const isMobile = /Mobi|Android/i.test(ua);
+    return isMobile;
+};
+
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -42,12 +48,12 @@ app.get("/", (_req, res) => {
     res.redirect("/dashboard");
 });
 
-app.get("/dashboard", (_req, res) => {
-    res.render("dashboard", {});
+app.get("/dashboard", (req, res) => {
+    res.render("dashboard", {isMobile: isMobileUser(req)});
 });
 
-app.get("/uploads", (_req, res) => {
-    res.render("uploads", {});
+app.get("/uploads", (req, res) => {
+    res.render("uploads", {isMobile: isMobileUser(req)});
 });
 
 app.get("/list-uploads", (req, res) => {
@@ -139,18 +145,18 @@ app.get("/viewFile", (req, res) => {
     const mimeType = mime.lookup(req.query.name);
     const splitType = mimeType ? mimeType.split("/") : ["invalid", "invalid"];
     if (splitType[0] == "audio") {
-        res.render("file-audio", {});
+        res.render("file-audio", {isMobile: isMobileUser(req)});
     } else if (splitType[0] == "video") {
-        res.render("file-video", {});
+        res.render("file-video", {isMobile: isMobileUser(req)});
     } else if (splitType[0] == "image") {
-        res.render("file-image", {});
+        res.render("file-image", {isMobile: isMobileUser(req)});
     } else {
-        res.render("file-plain", {colorTheme: getColorTheme(req)});
+        res.render("file-plain", {colorTheme: getColorTheme(req), isMobile: isMobileUser(req)});
     }
 });
 
-app.get("/uploadPage", (_req, res) => {
-    res.render("upload", {});
+app.get("/uploadPage", (req, res) => {
+    res.render("upload", {isMobile: isMobileUser(req)});
 });
 
 app.get("/getStats", (_req, res) => {
@@ -179,12 +185,12 @@ app.get("/getStats", (_req, res) => {
     });
 });
 
-app.get("/stats", (_req, res) => {
-    res.render("stats", {});
+app.get("/stats", (req, res) => {
+    res.render("stats", {isMobile: isMobileUser(req)});
 });
 
 app.get("/settings", (req, res) => {
-    res.render("settings", {colorTheme: getColorTheme(req)});
+    res.render("settings", {colorTheme: getColorTheme(req), isMobile: isMobileUser(req)});
 });
 
 app.post("/upload", upload.single("file"), (req, res) => {

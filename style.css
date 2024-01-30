@@ -50,3 +50,12 @@
 #user-settings-box {
     width: fit-content;
 }
+
+#nav-mobile-menu-btn {
+    float: right;
+}
+
+#mobile-menu-header {
+    display: table;
+    margin: 0 auto;
+}

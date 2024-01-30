@@ -63,3 +63,12 @@ button, input[type=submit] {
 input[type=text] {
     background-color: #111111;
 }
+
+#nav-mobile-menu-btn {
+    float: right;
+}
+
+#mobile-menu-header {
+    display: table;
+    margin: 0 auto;
+}

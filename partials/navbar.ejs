@@ -1,7 +1,36 @@
+<% if (isMobile) { %>
+<div id="mobile-menu" style="display: none">
+    <span id="mobile-menu-header">Menu</span><br>
+    <a href="/dashboard" class="act-link">&gt; dashboard</a><br>
+    <a href="/uploads" class="act-link">&gt; files</a><br>
+    <a href="/uploadPage" class="act-link">&gt; upload</a><br>
+    <a href="/stats" class="act-link">&gt; stats</a><br>
+    <a href="/settings" class="act-link">&gt; settings</a><br>
+    <hr>
+</div>
+<% } %>
 <h1 id="nav-header">jshs</h1>
+
+<% if (isMobile) { %>
+<a id="nav-mobile-menu-btn" href="javascript:void(0)">menu</a>
+<% } else { %>
 <a href="/dashboard" class="act-link">dashboard</a> |
 <a href="/uploads" class="act-link">files</a> |
 <a href="/uploadPage" class="act-link">upload</a> |
 <a href="/stats" class="act-link">stats</a> |
 <a href="/settings" class="act-link">settings</a>
+<% } %>
+
 <hr>
+
+<script>
+const mobileMenuLink = document.querySelector("#nav-mobile-menu-btn");
+const mobileMenu = document.querySelector("#mobile-menu");
+mobileMenuLink.onclick = e => {
+    if (mobileMenu.style.display == "none")
+        mobileMenu.style.display = "";
+    else
+        mobileMenu.style.display = "none";
+    e.preventDefault();
+};
+</script>
