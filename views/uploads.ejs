@@ -91,7 +91,7 @@
             };
 
             const renameFile = fileName => {
-                const newName = prompt(`New name for file '${name}':`);
+                const newName = prompt(`New name for file '${fileName}':`);
                 jshsApi.renameFile(folder, fileName, newName, response => {
                     alert(response);
                 });
