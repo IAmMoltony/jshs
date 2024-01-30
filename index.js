@@ -243,8 +243,6 @@ app.get("/rename", (req, res) => {
         }
     }
 
-    console.log(`Renaming file ${realFolder}/${filename} to ${realFolder}/${newName}`);
-
     mv(`${realFolder}/${filename}`, `${realFolder}/${newName}`, err => {
         if (err) {
             console.error("Failed to move file", err);
