@@ -309,17 +309,7 @@ app.get("/unzip", (req, res) => {
     console.log(`Unzipping ${realFile} into ${outFolder}`);
 
     const zip = new AdmZip(realFile);
-    const entries = zip.getEntries();
-
-    entries.forEach(entry => {
-        const name = entry.entryName;
-        const dirName = path.dirname(name);
-        const realDirName = `${outFolder}/${dirName}`;
-        const realFileName = `${outFolder}/${name}`;
-        fs.mkdirSync(realDirName, {recursive: true});
-        if (!entry.isDirectory)
-            fs.writeFileSync(realFileName, entry.getData());
-    });
+    zip.extractAllTo(outFolder);
 
     res.send("OK");
 });
