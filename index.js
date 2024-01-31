@@ -341,7 +341,6 @@ app.get("/delete", (req, res) => {
     res.send("OK");
 });
 
-app.use("/hljs", express.static("./highlightjs"));
 app.use("/js", express.static("./js"));
 app.use("/img", express.static("./img"));
 
