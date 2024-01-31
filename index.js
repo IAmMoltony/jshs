@@ -21,6 +21,8 @@ const storage = multer.diskStorage({
     }
 });
 
+const upload = multer({storage: storage});
+
 const app = express();
 const port = config.port;
 
@@ -203,7 +205,7 @@ app.get("/settings", (req, res) => {
     res.render("settings", {colorTheme: getColorTheme(req), isMobile: isMobileUser(req)});
 });
 
-app.post("/upload", storage.single("file"), (req, res) => {
+app.post("/upload", upload.single("file"), (req, res) => {
     const folder = req.body.folder;
     if (folder) {
         const realFolder = `${config.uploadsFolder}/${folder}`;
