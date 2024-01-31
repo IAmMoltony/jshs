@@ -13,10 +13,10 @@ const AdmZip = require("adm-zip");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (_req, _file, cb) => {
         cb(null, config.uploadsFolder);
     },
-    filename: (req, file, cb) => {
+    filename: (_req, file, cb) => {
         cb(null, Buffer.from(file.originalname, "latin1").toString("utf8")); // workaround so that non-english names work properly
     }
 });
