@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const mime = require("mime-types");
-const upload = require("./upload");
 const bodyParser = require("body-parser");
 const mv = require("mv");
 const config = require("./config");
@@ -11,6 +10,16 @@ const childProc = require("child_process");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const AdmZip = require("adm-zip");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, config.uploadsFolder);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Buffer.from(file.originalname, "latin1").toString("utf8")); // workaround so that non-english names work properly
+    }
+});
 
 const app = express();
 const port = config.port;
@@ -53,8 +62,8 @@ app.get("/dashboard", (req, res) => {
     res.render("dashboard", {isMobile: isMobileUser(req)});
 });
 
-app.get("/uploads", (req, res) => {
-    res.render("uploads", {isMobile: isMobileUser(req)});
+app.get("/files", (req, res) => {
+    res.render("files", {isMobile: isMobileUser(req)});
 });
 
 app.get("/list-uploads", (req, res) => {
@@ -194,7 +203,7 @@ app.get("/settings", (req, res) => {
     res.render("settings", {colorTheme: getColorTheme(req), isMobile: isMobileUser(req)});
 });
 
-app.post("/upload", upload.single("file"), (req, res) => {
+app.post("/upload", storage.single("file"), (req, res) => {
     const folder = req.body.folder;
     if (folder) {
         const realFolder = `${config.uploadsFolder}/${folder}`;

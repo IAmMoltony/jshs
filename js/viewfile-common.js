@@ -6,9 +6,9 @@
     }
     pFileName.innerText = fileNameText;
 
-    let backHref = "/uploads";
+    let backHref = "/files";
     if (getQueryParam("folder") != undefined) {
-        backHref = `/uploads?startFolder=${getQueryParam("folder")}`;
+        backHref = `/files?startFolder=${getQueryParam("folder")}`;
     }
     const backLink = document.querySelector("#viewfileBackLink");
     backLink.setAttribute("href", backHref);
