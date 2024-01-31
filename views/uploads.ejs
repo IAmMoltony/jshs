@@ -112,6 +112,20 @@
                 });
             };
 
+            const deleteFile = fileName => {
+                const doDelete = confirm(`Do you really want to delete ${fileName}? This action cannot be undone.`);
+                if (!doDelete)
+                    return;
+
+                jshsApi.deleteFile(folder, fileName, resp => {
+                    if (resp == "OK") {
+                        getUploads();
+                    } else {
+                        alert(`Delete failed: ${resp}`);
+                    }
+                });
+            };
+
             const getUploads = () => {
                 makeFilesTable();
                 clearSearch();

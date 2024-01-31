@@ -98,5 +98,21 @@ const jshsApi = {
             .then(resp => resp.text())
             .then(data => cb(data))
             .catch(err => console.error("Failed to unzip file:", err));
+    },
+
+    deleteFile: (folder, fileName, cb) => {
+        if (!fileName) {
+            console.error("Please specify file name");
+            return;
+        }
+
+        let params = `?filename=${fileName}`;
+        if (folder)
+            params += `&folder=${folder}`;
+
+        fetch(`/delete${params}`)
+            .then(resp => resp.text())
+            .then(data => cb(data))
+            .catch(err => console.error("Failed to delete file:", err));
     }
 };

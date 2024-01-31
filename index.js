@@ -312,6 +312,35 @@ app.get("/unzip", (req, res) => {
     res.send("OK");
 });
 
+app.get("/delete", (req, res) => {
+    const folder = req.query.folder;
+    const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
+    const name = req.query.filename;
+    
+    if (!name) {
+        res.status(400).send("File name argument not set");
+        return;
+    }
+
+    if (name.includes("/")) {
+        res.status(400).send("File name nust not contain slashes");
+        return;
+    }
+
+    if (folder) {
+        if (folder.includes("..")) {
+            res.status(400).send("dir traversal atk");
+            return;
+        }
+    }
+
+    const realName = `${realFolder}/${name}`;
+
+    // delete it
+    fs.rmSync(realName, {recursive: true, force: true});
+    res.send("OK");
+});
+
 app.use("/hljs", express.static("./highlightjs"));
 app.use("/js", express.static("./js"));
 app.use("/img", express.static("./img"));
