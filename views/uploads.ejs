@@ -172,7 +172,8 @@
                             const fileSize = strFileSize(file.size);
                             const dlLink = file.isDir ? "" : ` | <a href="javascript:dlFile('${file.name}')">Download</a>`;
                             const unzLink = file.mimeType == "application/zip" ? ` | <a href="javascript:unzipFile('${file.name}');">Extract</a>` : "";
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}${unzLink}</td></tr>`;
+                            const delLink = ` | <a href="javascript:deleteFile('${file.name}')">Delete</a>`;
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}${unzLink}${delLink}</td></tr>`;
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {
