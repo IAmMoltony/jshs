@@ -68,3 +68,7 @@ input[type="text"] {
     display: table;
     margin: 0 auto;
 }
+
+#imgFile {
+    max-height: 100vh;
+}
