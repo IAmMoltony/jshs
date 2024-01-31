@@ -26,7 +26,7 @@
 
 
 #file-code, #file-code * {
-    font-family: "Cascadia Code", "Cascadia Mono", "Consolas", monospace;
+    font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
 }
 
 .act-link {
