@@ -120,9 +120,9 @@ app.get("/list-uploads", (req, res) => {
 
 app.get("/style.css", (req, res) => {
     if (getColorTheme(req) == "dark") {
-        res.sendFile("./style-dark.css", sendFileOptions, onSendFile);
+        res.sendFile("./css/style-dark.css", sendFileOptions, onSendFile);
     } else {
-        res.sendFile("./style.css", sendFileOptions, onSendFile);
+        res.sendFile("./css/style.css", sendFileOptions, onSendFile);
     }
 });
 
