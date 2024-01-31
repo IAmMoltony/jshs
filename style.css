@@ -55,3 +55,7 @@
     display: table;
     margin: 0 auto;
 }
+
+#img-file {
+    max-height: 100vh;
+}
