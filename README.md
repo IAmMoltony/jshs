@@ -8,6 +8,7 @@ jshs is a simple home server written in Node.js and powered by Express.
 1. Make sure you have node.js installed
 1. Clone the repo: `git clone https://github.com/IAmMoltony/jshs`
 1. In the repo folder, run `npm i`
+1. Now generate a password: `node gen-password.js <new password>`
 1. Done
 
 Now to start jshs, run `node index.js`. The default port is
@@ -21,10 +22,12 @@ Configuration is done using the `jshs-config.js` file.
 - `fileRoot`: Root of all files. If using an absolute path for `uploadsFolder`,
   set this to `/`. If the uploads folder is relative to the jshs root directory,
   then set to `*DIRNAME*`.
-- `port`: The port on which the server will run at. 8000 is usually fine.
+- `port`: The port on which the server will run. 8000 is usually fine.
 
 ## Features
 
 - Web-based interface
 - Streaming uploaded video and audio
 - Basic file manager
+- Mobile-friendly (mostly)
+- Authentication with a password

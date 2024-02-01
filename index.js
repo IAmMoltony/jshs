@@ -11,6 +11,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const AdmZip = require("adm-zip");
 const multer = require("multer");
+const crypto = require("crypto");
+const sha256 = require("sha256");
 
 const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
@@ -25,6 +27,11 @@ const upload = multer({storage: storage});
 
 const app = express();
 const port = config.port;
+
+const sessionIdPlain = crypto.randomBytes(128);
+const sessionId = sha256(sessionIdPlain).toString("base64");
+
+const passwordInfo = JSON.parse(fs.readFileSync("./password.json"));
 
 const sendFileOptions = {
     root: path.join(__dirname)
@@ -50,6 +57,18 @@ const isMobileUser = req => {
     return isMobile;
 };
 
+const validatePassword = password => {
+    const salted = password + passwordInfo.salt;
+    const hashed = sha256(salted).toString("base64");
+    return hashed == passwordInfo.password;
+};
+
+const checkSessionCookie = req => {
+    if (!req.cookies.jshsSession)
+        return false;
+    return sha256(req.cookies.jshsSession).toString("base64") == sessionId;
+};
+
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -60,11 +79,38 @@ app.get("/", (_req, res) => {
     res.redirect("/dashboard");
 });
 
+app.post("/login", (req, res) => {
+    const password = req.body.password;
+    if (validatePassword(password)) {
+        res.cookie("jshsSession", sessionIdPlain, {httpOnly: true});
+        res.redirect("/dashboard");
+    } else {
+        res.redirect("/loginPage?failed=yes");
+    }
+});
+
+app.get("/loginPage", (req, res) => {
+    if (checkSessionCookie(req)) {
+        // user is already logged in
+        res.redirect("/dashboard");
+        return;
+    }
+    res.render("login", {isMobile: isMobileUser(req)});
+});
+
 app.get("/dashboard", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
     res.render("dashboard", {isMobile: isMobileUser(req)});
 });
 
 app.get("/files", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
     res.render("files", {isMobile: isMobileUser(req)});
 });
 
@@ -81,11 +127,17 @@ app.get("/list-uploads", (req, res) => {
     if (folder != undefined) {
         // check folder
         if (folder.includes("..")) {
-            console.error(`someone tried to do directory traversal attack (folder is '${folder}')`);
             respObj.errCode = 1;
             res.json(respObj);
             return;
         }
+    }
+
+    if (!checkSessionCookie(req)) {
+        // user isn't logged in
+        respObj.errCode = 2;
+        res.json(respObj);
+        return;
     }
 
     let uploadsBase = config.uploadsFolder;
@@ -127,6 +179,11 @@ app.get("/style.css", (req, res) => {
 });
 
 app.get("/rawFile", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     let name;
     const folder = req.query.folder;
     if (folder != undefined) {
@@ -154,6 +211,11 @@ app.get("/rawFile", (req, res) => {
 });
 
 app.get("/viewFile", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     const mimeType = mime.lookup(req.query.name);
     const splitType = mimeType ? mimeType.split("/") : ["invalid", "invalid"];
     if (splitType[0] == "audio") {
@@ -168,10 +230,19 @@ app.get("/viewFile", (req, res) => {
 });
 
 app.get("/uploadPage", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     res.render("upload", {isMobile: isMobileUser(req)});
 });
 
-app.get("/getStats", (_req, res) => {
+app.get("/getStats", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        return;
+    }
+
     statsApi.getDiskSpace(space => {
         let unameExec = "uname -a";
         if (process.platform == "win32") {
@@ -198,14 +269,29 @@ app.get("/getStats", (_req, res) => {
 });
 
 app.get("/stats", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     res.render("stats", {isMobile: isMobileUser(req)});
 });
 
 app.get("/settings", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     res.render("settings", {colorTheme: getColorTheme(req), isMobile: isMobileUser(req)});
 });
 
 app.post("/upload", upload.single("file"), (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.status(401).send("Auth required");
+        return;
+    }
+
     const folder = req.body.folder;
     if (folder) {
         const realFolder = `${config.uploadsFolder}/${folder}`;
@@ -223,6 +309,11 @@ app.post("/upload", upload.single("file"), (req, res) => {
 });
 
 app.get("/rename", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.status(401).send("Auth required");
+        return;
+    }
+
     const folder = req.query.folder;
     const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
     const filename = req.query.filename;
@@ -267,6 +358,11 @@ app.get("/rename", (req, res) => {
 });
 
 app.post("/setTheme", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.redirect("/loginPage");
+        return;
+    }
+
     const selectedTheme = req.body.usTheme;
 
     // check if it's a real theme
@@ -276,10 +372,11 @@ app.post("/setTheme", (req, res) => {
         return;
     }
 
-    // set theme cookie
+    // expire in a year
     const expireTime = new Date();
     expireTime.setFullYear(expireTime.getFullYear() + 1);
 
+    // set cookie
     res.cookie("jshsTheme", selectedTheme, {
         expires: expireTime,
         httpOnly: true,
@@ -289,6 +386,11 @@ app.post("/setTheme", (req, res) => {
 });
 
 app.get("/unzip", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.status(401).send("Auth required");
+        return;
+    }
+
     const folder = req.query.folder;
     const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
     const zipName = req.query.zipName;
@@ -324,6 +426,11 @@ app.get("/unzip", (req, res) => {
 });
 
 app.get("/delete", (req, res) => {
+    if (!checkSessionCookie(req)) {
+        res.status(401).send("Auth required");
+        return;
+    }
+
     const folder = req.query.folder;
     const realFolder = folder ? `${config.uploadsFolder}/${folder}` : config.uploadsFolder;
     const name = req.query.filename;
