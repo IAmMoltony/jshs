@@ -14,6 +14,10 @@ const multer = require("multer");
 const crypto = require("crypto");
 const sha256 = require("sha256");
 
+if (!fs.existsSync("./password.json")) {
+    throw new Error("password.json not found. Please generate a password.");
+}
+
 const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, config.uploadsFolder);
