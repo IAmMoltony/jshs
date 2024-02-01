@@ -170,13 +170,39 @@
                                 }
                                 fileLink = `<a href="${viewFileUrl}">${file.name}</a>`;
                             }
+
+                            let fileIconName = "file-idk";
+                            const mtSplit = file.mimeType.split("/");
+                            if (file.isDir) {
+                                fileIconName = "folder";
+                            } else {
+                                switch (mtSplit[0]) {
+                                case "audio":
+                                    fileIconName = "file-audio";
+                                    break;
+                                case "image":
+                                    fileIconName = "file-image";
+                                    break;
+                                case "text":
+                                    fileIconName = "file-plain";
+                                    break;
+                                case "video":
+                                    fileIconName = "file-video";
+                                    break;
+                                case "font":
+                                    fileIconName = "file-font";
+                                    break;
+                                }
+                            }
+
                             const classAttr = (i % 2 == 0) ? " class=\"ft-row-even\"" : "";
                             const renameLink = `<a href="javascript:renameFile('${file.name}')">Rename</a>`;
                             const fileSize = strFileSize(file.size);
                             const dlLink = file.isDir ? "" : ` | <a href="javascript:dlFile('${file.name}')">Download</a>`;
                             const unzLink = file.mimeType == "application/zip" ? ` | <a href="javascript:unzipFile('${file.name}');">Extract</a>` : "";
                             const delLink = ` | <a href="javascript:deleteFile('${file.name}')">Delete</a>`;
-                            filesTable.innerHTML += `<tr${classAttr}><td>${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}${unzLink}${delLink}</td></tr>`;
+                            const fileIcon = `<img src=\"img/${fileIconName}.png\" alt=\"icon\">`;
+                            filesTable.innerHTML += `<tr${classAttr}><td>${fileIcon}${fileLink}</td><td>${fileSize}</td><td>${file.isDir ? "Folder" : getFileType(file.mimeType, file.name)}</td><td>${renameLink}${dlLink}${unzLink}${delLink}</td></tr>`;
                         });
                         pStatus.innerText = `Found ${numFiles} files and ${numDirs} folders`;
                         if (folder != undefined) {
