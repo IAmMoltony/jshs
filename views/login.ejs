@@ -8,12 +8,14 @@
     <link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
-    <h1>Log in</h1>
-    <form action="/login" method="post">
-        <input type="password" name="password" id="password" placeholder="Password">&nbsp;
-        <input type="submit" name="loginSubmit" id="loginSubmit" value="Log in">
-    </form>
-    <p id="login-fail" style="color: red; font-weight: bold; display: none">Login failed</p>
+    <div id="login-container">
+        <h1>Log in</h1>
+        <form action="/login" method="post">
+            <input type="password" name="password" id="password" placeholder="Password">&nbsp;
+            <input type="submit" name="loginSubmit" id="loginSubmit" value="Log in">
+        </form>
+        <p id="login-fail" style="color: red; font-weight: bold; display: none">Login failed</p>
+    </div>
 
     <script src="js/params.js"></script>
     <script>
