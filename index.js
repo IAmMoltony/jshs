@@ -37,6 +37,8 @@ const sessionId = sha256(sessionIdPlain).toString("base64");
 
 const passwordInfo = JSON.parse(fs.readFileSync("./password.json"));
 
+const njsVersion = process.version;
+
 const sendFileOptions = {
     root: path.join(__dirname)
 };
@@ -264,7 +266,8 @@ app.get("/getStats", (req, res) => {
                 const statsJson = {
                     diskSpace: diskSpace,
                     runningOn: runningOn,
-                    uploadSize: size
+                    uploadSize: size,
+                    nodeVersion: njsVersion
                 };
                 res.json(statsJson);
             });

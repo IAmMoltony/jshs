@@ -13,6 +13,7 @@
         <p>Disk usage: <span id="diskUsage">[...]</span></p>
         <p>Running on: <span id="runningOn">[...]</span></p>
         <p>Total uploads size: <span id="uploadSize">[...]</span></p>
+        <p>Running on Node.js <span id="njsVersion">[...]</span></p>
 
         <script src="js/api.js"></script>
         <script src="js/filesize.js"></script>
@@ -20,12 +21,14 @@
             const spDiskUsage = document.querySelector("#diskUsage");
             const spRunningOn = document.querySelector("#runningOn");
             const spUploadSize = document.querySelector("#uploadSize");
+            const spNjsVersion = document.querySelector("#njsVersion");
             const btnRefresh = document.querySelector("#btnRefresh");
 
             const updateStats = () => {
                 spDiskUsage.innerText = "...";
                 spRunningOn.innerText = "...";
                 spUploadSize.innerText = "...";
+                spNjsVersion.innerText = "...";
 
                 jshsApi.getStats(statsRaw => {
                     const stats = JSON.parse(statsRaw);
@@ -40,10 +43,12 @@
 
                     const runningOn = stats.runningOn;
                     const uploadSize = stats.uploadSize;
+                    const njsVersion = stats.nodeVersion;
 
                     spDiskUsage.innerText = `${strUsed}/${strTotal} (${usedPercent}%) used, ${strFree} free`;
                     spRunningOn.innerText = runningOn;
                     spUploadSize.innerText = strFileSize(uploadSize);
+                    spNjsVersion.innerText = njsVersion;
                 });
             };
 
