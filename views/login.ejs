@@ -6,13 +6,24 @@
     <title>jshs | Log in</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/favicon.png" type="image/png">
+    <% if (isMobile) { %>
+    <style>
+        #login-submit {
+            display: table;
+            margin: 0 auto;
+        }
+    </style>
+    <% } %>
 </head>
 <body>
     <div id="login-container">
         <h1>Log in</h1>
         <form action="/login" method="post">
             <input type="password" name="password" id="password" placeholder="Password">&nbsp;
-            <input type="submit" name="loginSubmit" id="loginSubmit" value="Log in">
+            <% if (isMobile) { %>
+            <br>
+            <% } %>
+            <input type="submit" name="loginSubmit" id="login-submit" value="Log in">
         </form>
         <p id="login-fail" style="color: red; font-weight: bold; display: none">Login failed</p>
     </div>

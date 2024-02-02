@@ -65,6 +65,10 @@ const isMobileUser = req => {
     return isMobile;
 };
 
+const isLocalRequest = req => {
+    return req.connection.localAddress == req.connection.remoteAddress;
+};
+
 const validatePassword = password => {
     const salted = password + passwordInfo.salt;
     const hashed = sha256(salted).toString("base64");
@@ -72,6 +76,11 @@ const validatePassword = password => {
 };
 
 const checkSessionCookie = req => {
+    // if local address, always return true
+    if (isLocalRequest(req)) {
+        return true;
+    }
+
     if (!req.cookies.jshsSession)
         return false;
     return sha256(req.cookies.jshsSession).toString("base64") == sessionId;
