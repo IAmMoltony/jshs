@@ -9,6 +9,10 @@ jshs is a simple home server written in Node.js and powered by Express.
 1. Clone the repo: `git clone https://github.com/IAmMoltony/jshs`
 1. In the repo folder, run `npm i`
 1. Now generate a password: `node gen-password.js <new password>`
+  - Note: this can be skipped if you disable authentication
+    in `jshs-config.json` but this is **VERY HIGHLY DISCOURAGED**.
+    Please do not disable auth unless that is completely
+    necessary.
 1. Done
 
 Now to start jshs, run `node index.js`. The default port is

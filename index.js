@@ -41,6 +41,19 @@ const njsVersion = process.version;
 
 const pkgJson = JSON.parse(fs.readFileSync("./package.json"));
 
+const authEnabled = config.auth;
+
+if (!authEnabled) {
+    console.warn("!!!!!!!!!!! WARNING: AUTH IS DISABLED !!!!!!!!!!!");
+    console.warn("This is very unsafe. Please enable authentication");
+    console.warn("back again unless you know what you are doing.");
+    console.warn("To enable authentication back again, edit `jshs-config.json`");
+    console.warn("And replace this line:\n");
+    console.warn("  \"auth\": false");
+    console.warn("with:\n");
+    console.warn("  \"auth\": true");
+}
+
 const sendFileOptions = {
     root: path.join(__dirname)
 };
@@ -76,6 +89,11 @@ const validatePassword = password => {
 };
 
 const checkSessionCookie = req => {
+    // if auth is disabled for whatever reason, always return true
+    if (!authEnabled) {
+        return true;
+    }
+
     // if local address, always return true
     if (isLocalRequest(req)) {
         return true;
