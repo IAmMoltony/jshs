@@ -175,6 +175,10 @@ app.get("/list-uploads", (req, res) => {
         return;
     }
 
+    if (!fs.existsSync(config.uploadsFolder)) {
+        fs.mkdirSync(config.uploadsFolder);
+    }
+
     let uploadsBase = config.uploadsFolder;
     if (folder != undefined) {
         uploadsBase += `/${folder}`;
@@ -335,6 +339,10 @@ app.post("/upload", upload.single("file"), (req, res) => {
         if (folder.includes("..")) {
             res.status(400).send("directory traversal attack???");
             return;
+        }
+
+        if (!fs.existsSync(config.uploadsFolder)) {
+            fs.mkdirSync(config.uploadsFolder);
         }
 
         mv(`${config.uploadsFolder}/${req.file.filename}`, `${realFolder}/${req.file.filename}`, {mkdirp: true}, err => {
