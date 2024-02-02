@@ -39,6 +39,8 @@ const passwordInfo = JSON.parse(fs.readFileSync("./password.json"));
 
 const njsVersion = process.version;
 
+const pkgJson = JSON.parse(fs.readFileSync("./package.json"));
+
 const sendFileOptions = {
     root: path.join(__dirname)
 };
@@ -267,7 +269,8 @@ app.get("/getStats", (req, res) => {
                     diskSpace: diskSpace,
                     runningOn: runningOn,
                     uploadSize: size,
-                    nodeVersion: njsVersion
+                    nodeVersion: njsVersion,
+                    softwareVersion: pkgJson.version
                 };
                 res.json(statsJson);
             });
