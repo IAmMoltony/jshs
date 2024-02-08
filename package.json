@@ -1,6 +1,6 @@
 {
   "name": "jshs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Javascript home server",
   "main": "index.js",
   "scripts": {

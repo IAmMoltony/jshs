@@ -14,7 +14,9 @@ const multer = require("multer");
 const crypto = require("crypto");
 const sha256 = require("sha256");
 
-if (!fs.existsSync("./password.json")) {
+const authEnabled = config.auth;
+
+if (!fs.existsSync("./password.json") && authEnabled) {
     throw new Error("password.json not found. Please generate a password.");
 }
 
@@ -40,8 +42,6 @@ const passwordInfo = JSON.parse(fs.readFileSync("./password.json"));
 const njsVersion = process.version;
 
 const pkgJson = JSON.parse(fs.readFileSync("./package.json"));
-
-const authEnabled = config.auth;
 
 if (!authEnabled) {
     console.warn("!!!!!!!!!!! WARNING: AUTH IS DISABLED !!!!!!!!!!!");
